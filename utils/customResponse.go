@@ -1,6 +1,10 @@
 package utils
 
-import "github.com/gin-gonic/gin"
+import (
+	"os"
+
+	"github.com/gin-gonic/gin"
+)
 
 type Response struct {
 	Message string
@@ -23,9 +27,9 @@ func CustomResponse(c *gin.Context, content *Response, err error) {
 			content.Message = err.Error()
 		}
 	}
-
+	version := os.Getenv("DB_URL")
 	res := gin.H{
-		"version": "v1",
+		"version": version,
 		"data":    content.Data,
 		"message": content.Message,
 		"err":     isError,
