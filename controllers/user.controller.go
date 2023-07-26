@@ -60,4 +60,25 @@ func GetUsers(c *gin.Context) {
 		"data":    user,
 		"message": "get users",
 	})
+
+}
+
+func DeleteUser(c *gin.Context) {
+	email := c.Param("email")
+	user, err := services.DeleteUser(email)
+
+	if user == nil {
+		c.Status(404)
+		return
+	}
+
+	if err != nil {
+		c.Status(400)
+		return
+	}
+
+	c.JSON(201, gin.H{
+		"data":    user,
+		"message": "deleted",
+	})
 }
