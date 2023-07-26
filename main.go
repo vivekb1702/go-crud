@@ -4,6 +4,7 @@ import (
 	"go-crud/initializers"
 	"go-crud/routes"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
@@ -13,7 +14,14 @@ func init() {
 }
 func main() {
 
-	r := gin.Default()
-	routes.UserRoutes(r)
-	r.Run()
+	engine := gin.Default()
+
+	engine.SetTrustedProxies(nil)
+
+	config := cors.DefaultConfig()
+	config.AllowOrigins = []string{"http://localhost:300"}
+	config.AllowCredentials = true
+
+	routes.UserRoutes(engine)
+	engine.Run()
 }
