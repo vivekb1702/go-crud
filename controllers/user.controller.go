@@ -10,12 +10,13 @@ import (
 func CreateUser(c *gin.Context) {
 
 	var body struct {
-		Name  string
-		Email string
+		Name     string
+		Email    string
+		Password string
 	}
 	c.Bind(&body)
 
-	user, err := services.CreateUser(body.Name, body.Email)
+	user, err := services.CreateUser(body.Name, body.Email, body.Password)
 
 	utils.CustomResponse(c, &utils.Response{Message: "user created", Data: user, Status: 201}, err)
 

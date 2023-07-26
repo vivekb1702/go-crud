@@ -4,11 +4,24 @@ import (
 	"go-crud/initializers"
 	"go-crud/models"
 	"go-crud/utils"
+
+	"golang.org/x/crypto/bcrypt"
 )
 
-func CreateUser(name string, email string) (*models.User, error) {
+type createUserResponse struct {
+	Email string
+	Name  string
+}
 
-	user := models.User{Name: name, Email: email}
+func CreateUser(name string, email string, password string) (*createUserResponse, error) {
+
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), 10)
+
+	if err != nil {
+		return nil, err
+	}
+
+	user := models.User{Name: name, Email: email, Password: string(hashedPassword)}
 
 	findUser := initializers.DB.Where("email = ?", email).First(&user)
 
@@ -18,7 +31,9 @@ func CreateUser(name string, email string) (*models.User, error) {
 
 	result := initializers.DB.Create(&user)
 
-	return &user, result.Error
+	response := createUserResponse{Name: user.Name, Email: user.Email}
+
+	return &response, result.Error
 }
 
 type findUserResponse struct {
