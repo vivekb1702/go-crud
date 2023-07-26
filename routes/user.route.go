@@ -11,4 +11,5 @@ func UserRoutes(r *gin.Engine) {
 	r.GET("/:email", controllers.GetUser)
 	r.GET("/", controllers.GetUsers)
 	r.DELETE("/:email", controllers.DeleteUser)
+	r.PATCH("/", controllers.UpdateUser)
 }

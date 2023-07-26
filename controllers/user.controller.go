@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"go-crud/services"
+	"go-crud/utils"
 
 	"github.com/gin-gonic/gin"
 )
@@ -16,14 +17,8 @@ func CreateUser(c *gin.Context) {
 
 	user, err := services.CreateUser(body.Name, body.Email)
 
-	if err != nil {
-		c.Status(400)
-	}
+	utils.CustomResponse(c, &utils.Response{Message: "user created", Data: user, Status: 201}, err)
 
-	c.JSON(201, gin.H{
-		"data":    user,
-		"message": "created",
-	})
 }
 
 func GetUser(c *gin.Context) {
@@ -31,20 +26,8 @@ func GetUser(c *gin.Context) {
 	email := c.Param("email")
 	user, err := services.FindUser(email)
 
-	if user == nil {
-		c.Status(404)
-		return
-	}
+	utils.CustomResponse(c, &utils.Response{Message: "get user", Data: user, Status: 200}, err)
 
-	if err != nil {
-		c.Status(400)
-		return
-	}
-
-	c.JSON(200, gin.H{
-		"data":    user,
-		"message": "get user",
-	})
 }
 
 func GetUsers(c *gin.Context) {
@@ -56,29 +39,26 @@ func GetUsers(c *gin.Context) {
 		return
 	}
 
-	c.JSON(200, gin.H{
-		"data":    user,
-		"message": "get users",
-	})
+	utils.CustomResponse(c, &utils.Response{Message: "get users", Data: user, Status: 200}, err)
 
+}
+
+func UpdateUser(c *gin.Context) {
+
+	var body struct {
+		Name  string
+		Email string
+	}
+	c.Bind(&body)
+
+	user, err := services.UpdateUser(body.Name, body.Email)
+
+	utils.CustomResponse(c, &utils.Response{Message: "user updated", Data: user, Status: 201}, err)
 }
 
 func DeleteUser(c *gin.Context) {
 	email := c.Param("email")
 	user, err := services.DeleteUser(email)
 
-	if user == nil {
-		c.Status(404)
-		return
-	}
-
-	if err != nil {
-		c.Status(400)
-		return
-	}
-
-	c.JSON(201, gin.H{
-		"data":    user,
-		"message": "deleted",
-	})
+	utils.CustomResponse(c, &utils.Response{Message: "user deleted", Data: user, Status: 204}, err)
 }
