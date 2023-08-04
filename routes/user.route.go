@@ -7,9 +7,10 @@ import (
 )
 
 func UserRoutes(r *gin.Engine) {
-	r.POST("/", controllers.CreateUser)
-	r.GET("/:email", controllers.GetUser)
-	r.GET("/", controllers.GetUsers)
-	r.DELETE("/:email", controllers.DeleteUser)
-	r.PATCH("/", controllers.UpdateUser)
+	group := r.Group("/user")
+	group.POST("/", controllers.CreateUser)
+	group.GET("/:email", controllers.GetUser)
+	group.GET("/", controllers.GetUsers)
+	group.DELETE("/:email", controllers.DeleteUser)
+	group.PATCH("/", controllers.UpdateUser)
 }
