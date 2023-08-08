@@ -4,7 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func UserRoutes(r *gin.Engine) {
+func UserRoutes(r *gin.RouterGroup) {
 	group := r.Group("/user")
 	group.POST("/", CreateUser)
 	group.GET("/:email", GetUser)

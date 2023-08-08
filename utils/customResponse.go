@@ -27,6 +27,7 @@ func CustomResponse(c *gin.Context, content *Response, err error) {
 			content.Message = err.Error()
 		}
 	}
+
 	version := os.Getenv("API_VERSION")
 	res := gin.H{
 		"version": version,
